@@ -28,14 +28,16 @@ jobs:
       if: runner.os != 'Windows'
       run: |
         find . -name "main.py" | while read file; do
-          pyinstaller --onefile "$file"
+          dir_name=$(basename "$(dirname "$file")")
+          pyinstaller --onefile --noconsole --name "$dir_name" --add-data "$(dirname "$file")/*:." "$file"
         done
 
     - name: Find and compile main.py files (Windows)
       if: runner.os == 'Windows'
       run: |
         Get-ChildItem -Recurse -Filter "main.py" | ForEach-Object {
-          pyinstaller --onefile $_.FullName
+          $dirName = $_.Directory.Name
+          pyinstaller --onefile --noconsole --name $dirName --add-data "$($_.Directory.FullName)\*;." $_.FullName
         }
 
     - name: Upload executables (Linux)
