@@ -1,0 +1,38 @@
+name: Compile Python Scripts
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install PyInstaller
+      run: pip install pyinstaller
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Find and compile main.py files
+      run: |
+        find . -name "main.py" | while read file; do
+          pyinstaller --onefile "$file"
+        done
+
+    - name: Upload executables
+      uses: actions/upload-artifact@v2
+      with:
+        name: executables
+        path: |
+          dist/*
