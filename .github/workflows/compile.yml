@@ -29,7 +29,7 @@ jobs:
       run: |
         find . -name "main.py" | while read file; do
           dir_name=$(basename "$(dirname "$file")")
-          pyinstaller --onefile --noconsole --name "$dir_name" --add-data "$(dirname "$file")/*:." "$file"
+          pyinstaller --onefile --noconsole --clean --noupx --name "$dir_name" --add-data "$(dirname "$file")/*:." "$file"
         done
 
     - name: Find and compile main.py files (Windows)
@@ -37,7 +37,7 @@ jobs:
       run: |
         Get-ChildItem -Recurse -Filter "main.py" | ForEach-Object {
           $dirName = $_.Directory.Name
-          pyinstaller --onefile --noconsole --name $dirName --add-data "$($_.Directory.FullName)\*;." $_.FullName
+          pyinstaller --onefile --noconsole --clean --noupx --name $dirName --add-data "$($_.Directory.FullName)\*;." $_.FullName
         }
 
     - name: Upload executables (Linux)
