@@ -1,0 +1,14 @@
+# Standard library packages (do not need to be included in requirements.txt)
+# tkinter
+# os
+# time
+# threading
+# re
+# configparser
+
+# Third-party packages
+spellchecker==0.4
+
+# Local modules (not included in requirements.txt)
+# preferences
+# spellcheck
