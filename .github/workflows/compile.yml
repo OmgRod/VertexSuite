@@ -24,11 +24,19 @@ jobs:
     - name: Install dependencies
       run: pip install -r requirements.txt
 
-    - name: Find and compile main.py files
+    - name: Find and compile main.py files (Linux/Mac)
+      if: runner.os != 'Windows'
       run: |
         find . -name "main.py" | while read file; do
           pyinstaller --onefile "$file"
         done
+
+    - name: Find and compile main.py files (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        Get-ChildItem -Recurse -Filter "main.py" | ForEach-Object {
+          pyinstaller --onefile $_.FullName
+        }
 
     - name: Upload executables
       uses: actions/upload-artifact@v3
