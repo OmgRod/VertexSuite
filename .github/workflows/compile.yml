@@ -38,9 +38,26 @@ jobs:
           pyinstaller --onefile $_.FullName
         }
 
-    - name: Upload executables
+    - name: Upload executables (Linux)
+      if: runner.os == 'Linux'
       uses: actions/upload-artifact@v3
       with:
-        name: executables
+        name: executables-linux
+        path: |
+          dist/*
+
+    - name: Upload executables (macOS)
+      if: runner.os == 'macOS'
+      uses: actions/upload-artifact@v3
+      with:
+        name: executables-macos
+        path: |
+          dist/*
+
+    - name: Upload executables (Windows)
+      if: runner.os == 'Windows'
+      uses: actions/upload-artifact@v3
+      with:
+        name: executables-windows
         path: |
           dist/*
